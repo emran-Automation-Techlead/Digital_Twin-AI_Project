@@ -8,6 +8,7 @@ import json
 import requests
 import random
 import time
+import logger
 
 #----------------------------------------
 #Setup
@@ -396,7 +397,8 @@ ALWAYS use the send_notification tool to alert the real Imran - do this automati
 #Main Response Function
 #------------------------------------------
 def respond_ai(message, history):
-   
+    user_message = message  # save before it gets overwritten below
+
     # RAG
     response = client.embeddings.create(
         model="text-embedding-3-small",
@@ -461,6 +463,8 @@ def respond_ai(message, history):
         output += char
         yield output + '<span class="blink-cursor">|</span>'
         time.sleep(0.03)
+
+    logger.log_conversation(user_message, text)
 
     # Final output without cursor
     yield output
